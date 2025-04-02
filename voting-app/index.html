@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Interface</title>
+    <link rel="stylesheet" href="voting.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="vote-container">
+      <h3 style="font-style: italic; color: cadetblue;">NINOS NIGHT ELECTION</h3>
+        <h2>CAST YOUR VOTE</h2>
+        <form action="votes.php" method="post">
+          <div class="list-container">
+          <label>
+            <input type="radio" name="candidate" value="Damien" required>Damien
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Eric" required>Eric
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Michael" required>Michael
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Nene" required>Nene
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Kelvin" required>Kelvin
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Richard" required>Richard
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="George" required>George
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Prince" required>Prince
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="David" required>David
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Micha" required>Micha
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Chrispine" required>Chrispine
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Luke" required>Luke
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Chris" required>Chris
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Seyram" required>Seyram
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Isaac" required>Isaac
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Stephanie" required>Stephanie
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Ablah" required>Ablah
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Ella" required>Ella
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Shalom" required>Shalom
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Shirley" required>Shirley
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Samantha" required>Samantha
+          </label>
+          <label>
+            <input type="radio" name="candidate" value="Renie" required>Renie
+          </label>
+        </div>
+        <button type="submit" class="button" style="cursor: pointer;">Vote</button>
+        </form>
+        <canvas id="voteChart" width="400" height="200"></canvas>
+    </div>
+</body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById('voteChart').getContext('2d');
+    let voteChart; // Global variable to store the chart instance
+
+    fetch("get_votes.php")
+        .then(response => response.json()) // Convert response to JSON
+        .then(data => {
+            console.log("Fetched Data:", data); // Debugging
+
+            if (!data || !data.candidate || !data.votes) {
+                console.error("Invalid or empty data format:", data);
+                return;
+            }
+
+            if (voteChart) {
+                voteChart.destroy();
+            }
+
+            voteChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.candidate, // Candidate names
+                    datasets: [{
+                        label: 'Votes',
+                        data: data.votes, // Votes count
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
+});
+</script>
+</html>
